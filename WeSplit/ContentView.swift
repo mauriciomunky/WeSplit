@@ -13,14 +13,12 @@ struct ContentView: View {
     @State private var numeroDePessoas = 2
     @State private var gorjeta = 20
     let porcentagemGorjeta = [0, 5, 10, 15, 20]
-     var totalPorPessoa: Double {
-        let pessoas = Double(numeroDePessoas + 2)
-        let gorjetaEscolhida = Double(gorjeta)
-        let valorGorjeta = valorDaConta/100 * gorjetaEscolhida
-        let totalDaConta = valorDaConta + valorGorjeta
-        let valorPorPessoa = totalDaConta/pessoas
-        return valorPorPessoa
-    }
+    var pessoas: Double { return Double(numeroDePessoas + 2)}
+    var gorjetaEscolhida: Double { return Double(gorjeta)}
+    var valorGorjeta: Double {return Double(valorDaConta/100 * gorjetaEscolhida)}
+    var totalDaConta: Double {return (valorDaConta + valorGorjeta)}
+    var totalPorPessoa: Double { return totalDaConta/pessoas}
+    
     var body: some View {
         NavigationView {
             Form {
@@ -36,18 +34,30 @@ struct ContentView: View {
                 }
                 Section {
                     Picker("Porcentagem da Gorjeta", selection: $gorjeta) {
-                        ForEach(porcentagemGorjeta, id: \.self) {
+                        ForEach(0..<101) {
                             Text($0, format: .percent)
                         }
-                    }.pickerStyle(.segmented)
+                    }.pickerStyle(.automatic)
                 } header: {
                     Text("Qual a porcentagem da gorjeta?")
             }
+                Section {
+                    Text(valorGorjeta.formatted(.currency(code: Locale.current.currencyCode ?? "BRL")))
+                } header: {
+                    Text("Valor da gorjeta")
+                }
+                Section {
+                    Text(totalDaConta.formatted(.currency(code: Locale.current.currencyCode ?? "BRL")))
+                } header: {
+                    Text("Total da conta")
+                }
             Section {
                 Text(totalPorPessoa, format: .currency(code: Locale.current.currencyCode ?? "BRL"))
-                }
+            } header: {
+                Text("Valor por pessoa")
             }
-        }.navigationTitle("WeSplit")
+            }
+        }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
