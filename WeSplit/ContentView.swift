@@ -18,12 +18,15 @@ struct ContentView: View {
     var valorGorjeta: Double {return Double(valorDaConta/100 * gorjetaEscolhida)}
     var totalDaConta: Double {return (valorDaConta + valorGorjeta)}
     var totalPorPessoa: Double { return totalDaConta/pessoas}
+    var moeda : FloatingPointFormatStyle<Double>.Currency {
+        return FloatingPointFormatStyle<Double>.Currency(code: Locale.current.currencyCode ?? "BRL")
+    }
     
     var body: some View {
         NavigationView {
-            Form {
-                Section {
-                    TextField("Valor da Conta", value: $valorDaConta, format: .currency(code: Locale.current.currencyCode ?? "BRL"))
+            VStack {
+                Form {
+                    TextField("Valor da Conta", value: $valorDaConta, format: moeda)
                         .keyboardType(.decimalPad)
                         .focused($valorEmFoco)
                     Picker("Número de pessoas", selection: $numeroDePessoas) {
@@ -31,44 +34,42 @@ struct ContentView: View {
                             Text("\($0) pessoas")
                         }
                     }.pickerStyle(.automatic)
-                }
-                Section {
                     Picker("Porcentagem da Gorjeta", selection: $gorjeta) {
                         ForEach(0..<101) {
                             Text($0, format: .percent)
                         }
                     }.pickerStyle(.automatic)
-                } header: {
-                    Text("Qual a porcentagem da gorjeta?")
-            }
-                Section {
-                    Text(valorGorjeta.formatted(.currency(code: Locale.current.currencyCode ?? "BRL")))
-                } header: {
-                    Text("Valor da gorjeta")
-                }
-                Section {
-                    Text(totalDaConta.formatted(.currency(code: Locale.current.currencyCode ?? "BRL")))
-                } header: {
-                    Text("Total da conta")
-                }
-            Section {
-                Text(totalPorPessoa, format: .currency(code: Locale.current.currencyCode ?? "BRL"))
-            } header: {
-                Text("Valor por pessoa")
+                } .navigationTitle("WeSplit")
+                    .toolbar {
+                        ToolbarItemGroup(placement: .keyboard) {
+                            Spacer()
+                            Button("Fechar") {
+                                valorEmFoco = false
+                            }
+                        }
+                    }
+                VStack {
+                        Section {
+                            Text(valorGorjeta.formatted(moeda))
+                        } header: {
+                            Text("Valor da gorjeta")
+                        }
+                        Section {
+                            Text(totalDaConta.formatted(moeda))
+                        } header: {
+                            Text("Total da conta")
+                        }
+                        Section {
+                            Text(totalPorPessoa, format: moeda)
+                        } header: {
+                            Text("Valor por pessoa")
+                        }
+                        Spacer()
+                    }
             }
             }
         }
-        .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                
-                Button("Fechar") {
-                    valorEmFoco = false
-                }
-            }
-        }
-    } 
-}
+    }
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
