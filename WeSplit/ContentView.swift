@@ -28,7 +28,6 @@ struct ContentView: View {
                         .font(.body)
                         .foregroundColor(Color.gray)
                         .padding(.bottom, -100.0)
-                        .frame(height: -1.0)
                     TextField("Valor da Conta", value: $valorDaConta, format: moeda)
                         .padding(.top, -20.0)
                         .keyboardType(.decimalPad)
