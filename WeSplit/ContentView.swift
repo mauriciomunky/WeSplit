@@ -22,7 +22,8 @@ struct ContentView: View {
     }
     
     var body: some View {
-        VStack() {
+        VStack {
+            NavigationView{
                 Form {
                     Text("Valor da Conta")
                         .font(.body)
@@ -42,7 +43,9 @@ struct ContentView: View {
                             Text($0, format: .percent)
                         }
                     }.pickerStyle(.automatic)
-                }.frame(height: /*@START_MENU_TOKEN@*/200.0/*@END_MENU_TOKEN@*/).toolbar {
+                }
+                    .navigationTitle("WeSplit")
+            }.toolbar {
                         ToolbarItemGroup(placement: .keyboard) {
                             Spacer()
                             Button("Fechar") {
@@ -66,8 +69,7 @@ struct ContentView: View {
                     } header: {
                         Text("Valor por pessoa").font(.headline)
                     }
-                    Spacer()
-                    Spacer()
+                    
                 }
                 .padding(.all, 50.0)
         }
