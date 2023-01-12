@@ -60,7 +60,7 @@ struct ContentView: View {
                         Text("Valor da gorjeta").font(.headline)
                     }
                     Section {
-                        Text(totalDaConta.formatted(moeda)).font(.title)
+                        Text(totalDaConta.formatted(moeda)).font(.title).foregroundColor(gorjeta == 0 ? .red : .primary)
                     } header: {
                         Text("Total da conta").font(.headline)
                     }
